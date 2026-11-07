@@ -27,3 +27,18 @@ CREATE TABLE IF NOT EXISTS sessions (
     account_id bigint NOT NULL REFERENCES accounts ON DELETE CASCADE,
     expires_at timestamptz NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS enquiries (
+    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id bigint NOT NULL REFERENCES accounts,
+    subject text NOT NULL,
+    message text NOT NULL,
+    status text NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'pending', 'answered', 'rejected')),
+    draft text,
+    draft_sources jsonb,
+    reviewed_by bigint REFERENCES accounts,
+    reviewed_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS enquiries_customer_id_idx ON enquiries (customer_id, id DESC);

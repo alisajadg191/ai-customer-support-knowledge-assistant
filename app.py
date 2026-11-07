@@ -9,6 +9,7 @@ from pydantic import BaseModel, StringConstraints
 
 from auth import auth_routes
 from db import connect, initialize
+from enquiries import enquiry_routes
 from knowledge import Knowledge
 from model import ModelUnavailable, Ollama
 
@@ -41,6 +42,7 @@ def create_app(dsn=None, model=None):
 
     auth, current_user, require_staff, require_customer = auth_routes(dsn)
     api.include_router(auth)
+    api.include_router(enquiry_routes(dsn, knowledge, require_staff, require_customer))
 
     @api.exception_handler(ModelUnavailable)
     async def model_error(_request, _error):
