@@ -3,10 +3,11 @@ from contextlib import asynccontextmanager
 from typing import Annotated
 
 import psycopg
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, StringConstraints
 
+from auth import auth_routes
 from db import connect, initialize
 from knowledge import Knowledge
 from model import ModelUnavailable, Ollama
@@ -38,6 +39,9 @@ def create_app(dsn=None, model=None):
 
     api = FastAPI(title="AI Customer Support & Knowledge Assistant", lifespan=lifespan)
 
+    auth, current_user, require_staff, require_customer = auth_routes(dsn)
+    api.include_router(auth)
+
     @api.exception_handler(ModelUnavailable)
     async def model_error(_request, _error):
         return JSONResponse(status_code=503, content={"detail": "AI service unavailable"})
@@ -51,11 +55,11 @@ def create_app(dsn=None, model=None):
             raise HTTPException(503, "Database unavailable") from None
         return {"status": "ok", "database": "ready"}
 
-    @api.post("/documents", status_code=201)
+    @api.post("/documents", status_code=201, dependencies=[Depends(require_staff)])
     def add_document(document: Document):
         return knowledge.add(document.title, document.body)
 
-    @api.get("/documents/{document_id}")
+    @api.get("/documents/{document_id}", dependencies=[Depends(current_user)])
     def get_document(document_id: int):
         with connect(dsn) as connection:
             document = connection.execute("SELECT * FROM documents WHERE id = %s", (document_id,)).fetchone()
@@ -63,11 +67,11 @@ def create_app(dsn=None, model=None):
             raise HTTPException(404, "Document not found")
         return document
 
-    @api.post("/search")
+    @api.post("/search", dependencies=[Depends(current_user)])
     def search(payload: Question):
         return knowledge.search(payload.question)
 
-    @api.post("/ask")
+    @api.post("/ask", dependencies=[Depends(current_user)])
     def ask(payload: Question):
         return knowledge.answer(payload.question)
 

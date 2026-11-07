@@ -14,3 +14,16 @@ CREATE TABLE IF NOT EXISTS passages (
     embedding vector NOT NULL,
     PRIMARY KEY (document_id, position)
 );
+
+CREATE TABLE IF NOT EXISTS accounts (
+    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email text UNIQUE NOT NULL,
+    password_hash text NOT NULL,
+    role text NOT NULL CHECK (role IN ('customer', 'staff'))
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+    token_hash text PRIMARY KEY,
+    account_id bigint NOT NULL REFERENCES accounts ON DELETE CASCADE,
+    expires_at timestamptz NOT NULL
+);
