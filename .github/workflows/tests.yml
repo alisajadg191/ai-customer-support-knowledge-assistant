@@ -32,8 +32,8 @@ jobs:
       - name: Smoke test the Docker Compose deployment
         run: |
           docker compose up -d --build --wait
-          curl --fail --retry 12 --retry-connrefused --retry-delay 2 http://localhost:8000/health
-          curl --fail --silent http://localhost:8000/ | grep 'Customer Support Desk'
+          curl --fail --retry 12 --retry-all-errors --retry-delay 2 http://127.0.0.1:8000/health
+          curl --fail --silent http://127.0.0.1:8000/ | grep 'Customer Support Desk'
       - name: Show container logs
         if: failure()
         run: docker compose logs
