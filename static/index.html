@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Support Desk</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div><p class="eyebrow">NORTHSTAR · DEMO WORKSPACE</p><h1>Customer Support Desk</h1></div>
+    <button id="logout" hidden>Sign out</button>
+  </header>
+  <main>
+    <p id="notice" role="status" aria-live="polite"></p>
+    <section id="login-panel">
+      <h2>Sign in</h2>
+      <p>Use a demo customer or staff account. Work with fictional policies and enquiries.</p>
+      <form id="login">
+        <label>Email<input name="email" type="email" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button>Sign in</button>
+      </form>
+    </section>
+    <div id="customer" hidden>
+      <section>
+        <h2>Ask about a policy</h2>
+        <form id="ask">
+          <label>Question<input name="question" maxlength="800" required></label>
+          <button>Ask assistant</button>
+        </form>
+        <div id="answer" aria-live="polite"></div>
+      </section>
+      <section>
+        <h2>Open an enquiry</h2>
+        <form id="enquiry">
+          <label>Subject<input name="subject" maxlength="120" required></label>
+          <label>Message<textarea name="message" maxlength="2000" required></textarea></label>
+          <button>Submit enquiry</button>
+        </form>
+      </section>
+      <section>
+        <div class="row"><h2>My enquiries</h2><button id="refresh-customer">Refresh</button></div>
+        <div id="customer-queue"></div>
+      </section>
+    </div>
+    <div id="staff" hidden>
+      <section>
+        <h2>Add a knowledge document</h2>
+        <form id="policy">
+          <label>Title<input name="title" maxlength="120" required></label>
+          <label>Policy text<textarea name="body" maxlength="20000" required></textarea></label>
+          <button>Index policy</button>
+        </form>
+      </section>
+      <section>
+        <div class="row"><h2>Staff enquiry queue</h2><button id="refresh-staff">Refresh</button></div>
+        <div id="staff-queue"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

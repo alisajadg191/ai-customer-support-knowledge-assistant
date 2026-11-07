@@ -1,0 +1,18 @@
+:root { font: 16px/1.5 system-ui, sans-serif; color: #17313a; background: #edf3f3; }
+body { margin: 0; }
+header { background: #143740; color: white; padding: 1.5rem max(1.25rem, calc((100% - 850px) / 2)); }
+header, .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.eyebrow { font-size: .75rem; letter-spacing: .12em; color: #a2dfd0; margin: 0; }
+h1, h2, h3 { line-height: 1.2; margin: .35rem 0 1rem; }
+main { max-width: 850px; margin: auto; padding: .5rem 1.25rem 3rem; }
+section { background: white; border: 1px solid #cadbdb; border-radius: .65rem; padding: 1.2rem; margin-bottom: 1rem; }
+form { display: grid; gap: .7rem; }
+label { display: grid; gap: .25rem; font-weight: 600; }
+input, textarea { border: 1px solid #809a9d; border-radius: .35rem; padding: .55rem; font: inherit; }
+textarea { min-height: 5rem; resize: vertical; }
+button { background: #126357; color: white; border: 0; border-radius: .35rem; padding: .55rem .8rem; font: inherit; cursor: pointer; width: fit-content; }
+button:disabled { opacity: .55; cursor: wait; }
+button + button { margin-left: .5rem; }
+article { border-top: 1px solid #cadbdb; padding: .85rem 0; }
+article p, #answer p { white-space: pre-wrap; overflow-wrap: anywhere; }
+#notice { color: #7a251a; min-height: 1.2rem; }
